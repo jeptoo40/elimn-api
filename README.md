@@ -1,27 +1,27 @@
-# Elimn Assessment Project
+# Elimn API
 
 ## Project Overview
-Elimn Assessment is a full-stack project that provides backend APIs for user management, orders, and payments, along with a minimal frontend for testing.  
-It includes JWT authentication, role-based access control, order management, and a dummy payment system with webhook support.
+Elimn API is a **Node.js** REST API for order management and payments.  
+It supports user authentication, order creation, updates, and simulated payment processing.
 
 ---
 
 ## Tech Stack
-
-**Backend**
-- Node.js (v20.x)
-- Express.js
-- MySQL
-- dotenv (environment variables)
-- bcrypt (password hashing)
-- JSON Web Token (JWT)
-- Postman (API testing)
-
-**Frontend**
-- HTML/CSS (for minimal testing)
-- Optional: React.js (for full frontend implementation)
+- **Backend:** Node.js, Express.js  
+- **Database:** MySQL  
+- **Authentication:** JWT  
+- **Testing:** Postman  
+- **Others:** dotenv, morgan, body-parser  
 
 ---
+
+## Installation & Run Instructions
+
+1. Clone the repository:
+```bash
+git clone https://github.com/jeptoo40/elimn-api.git
+cd elimn-api
+
 
 ## Project Structure
 Elimn-Assessment/
@@ -38,11 +38,24 @@ Elimn-Assessment/
 │ ├─ utils/
 │ │ ├─ retry.js
 │ ├─ app.js
-├─ public/ # Optional frontend folder
-│ ├─ index.html
-│ ├─ scripts.js
+  ├─ db.js
+├── tests/
+│   ├── auth.test.js        # Signup/login
+│   ├── orders.test.js      # RBAC, idempotency
+│   ├── payments.test.js    # Webhook idempotency
+│   └── lru.test.js         # Algorithm tests
+├── algorithms/
+    └── lru.test.js     
+
+├─ frontend folder/
+│   ├─ index.html
+│   ├─ scripts.js
+│   ├─ app.js  //for admin UI
 ├─ .env
 ├─ package.json
+├─ package.json
+├─generateSignature.js
+├─Elimn-Assessment.postman_collection.json
 ├─ README.md
 
 
@@ -84,32 +97,62 @@ npm start
 
 http://localhost:3000
 
-POST http://localhost:3000/auth/login
 
-- POST /auth/signup
-- POST /auth/login
-- POST /orders  (items:[{sku,qty,price}], client_token)  [idempotent]
-- GET  /orders  (?status=&q=&page=&limit=)
-- GET  /orders/:id  (cached 30s; invalidated on updates)
-- PATCH /orders/:id/status  (ADMIN only; optimistic locking via `version`)
+DB STRUCTURE
+1.CREATE TABLE users (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(50) NOT NULL,
+  email VARCHAR(100) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL,
+  role ENUM('admin', 'customer') DEFAULT 'customer',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
-Payments:
-- POST /payments/initiate  (creates payment record, returns payment_id + redirect_url)
-- POST /payments/webhook   (HMAC signature: header `x-signature`, secret = PAYMENT_SECRET)
+2.CREATE TABLE orders (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  status ENUM('PENDING', 'PAID', 'CANCELLED') DEFAULT 'PENDING',
+  client_token VARCHAR(255),
+  amount_cents INT DEFAULT 0,
+  version INT DEFAULT 1,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+3.CREATE TABLE order_items (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  order_id INT NOT NULL,
+  product VARCHAR(100) NOT NULL,
+  qty INT NOT NULL,
+  FOREIGN KEY (order_id) REFERENCES orders(id)
+);
 
 
-POST http://localhost:3000/auth/login
 
- POST http://localhost:3000/orders
- http://localhost:3000/orders
-PATCH http://localhost:3000/orders/1
-POST http://localhost:3000/payments
-POST http://localhost:3000/payments/initiate
-POST http://localhost:3000/payments/webhook
+Postman Collection
+
+Import the provided Elimn-Assessment.postman_collection.json to test endpoints.
+
+Endpoints:
+
+POST /auth/signup – Create a new user
+
+POST /auth/login – Authenticate user & get JWT
+
+POST /orders – Create a new order
+
+GET /orders – Get all orders for authenticated user
+
+PATCH /orders/:id – Update order items or status
+
+POST /payments/initiate – Simulate payment initiation
+
+POST /payments/webhook – Simulate webhook callback for payment
 
 
 
 ## Notes
-- This is a minimal but complete implementation meeting the brief: RBAC, idempotency, optimistic locking, caching, webhook signature verification, retries, tests, and a lightweight UI.
-- Add Swagger & Docker healthchecks as time allows.
+Use Bearer token for authorization on /orders endpoints.
 
+Use x-signature header for /payments/webhook endpoint.
