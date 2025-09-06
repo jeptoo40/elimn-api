@@ -1,0 +1,167 @@
+{
+    "info": {
+      "name": "Elimn Assessment API",
+      "_postman_id": "12345678-abcd-1234-abcd-1234567890ab",
+      "description": "Collection for testing Elimn API endpoints",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Signup",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\",\n  \"role\": \"customer\"\n}"
+          },
+          "url": {
+            "raw": "http://localhost:3000/auth/signup",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3000",
+            "path": ["auth", "signup"]
+          }
+        }
+      },
+      {
+        "name": "Login",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\"\n}"
+          },
+          "url": {
+            "raw": "http://localhost:3000/auth/login",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3000",
+            "path": ["auth", "login"]
+          }
+        }
+      },
+      {
+        "name": "Create Order",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Authorization",
+              "value": "Bearer {{jwt_token}}"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"items\": [{ \"product\": \"Book\", \"qty\": 2 }],\n  \"client_token\": \"abc123\"\n}"
+          },
+          "url": {
+            "raw": "http://localhost:3000/orders",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3000",
+            "path": ["orders"]
+          }
+        }
+      },
+      {
+        "name": "Get Orders",
+        "request": {
+          "method": "GET",
+          "header": [
+            {
+              "key": "Authorization",
+              "value": "Bearer {{jwt_token}}"
+            }
+          ],
+          "url": {
+            "raw": "http://localhost:3000/orders",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3000",
+            "path": ["orders"]
+          }
+        }
+      },
+      {
+        "name": "Initiate Payment",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Authorization",
+              "value": "Bearer {{jwt_token}}"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"orderId\": 1,\n  \"amount\": 1000\n}"
+          },
+          "url": {
+            "raw": "http://localhost:3000/payments/initiate",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3000",
+            "path": ["payments", "initiate"]
+          }
+        }
+      },
+      {
+        "name": "Webhook",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "x-signature",
+              "value": "{{webhook_signature}}"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"payment_id\": 1757151513000,\n  \"order_id\": 1,\n  \"status\": \"SUCCESS\"\n}"
+          },
+          "url": {
+            "raw": "http://localhost:3000/payments/webhook",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3000",
+            "path": ["payments", "webhook"]
+          }
+        }
+      }
+    ],
+    "variable": [
+      {
+        "key": "jwt_token",
+        "value": ""
+      },
+      {
+        "key": "webhook_signature",
+        "value": ""
+      }
+    ]
+  }
+  

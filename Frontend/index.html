@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html land="en">
+    <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Elimn Admin Dashboard</title>
+<link rel="stylesheet" href="style.css">
+
+    </head>
+    <body>
+        <div class="container">
+            <h1>Elimn Orders </h1>
+
+
+            <div id="login-section">
+                <h2>Login</h2>
+                <input type="email" id="email" placeholder="your email"/>
+                <input type="password" id="password" placeholder="your password"/>
+                <button onclick="login()">Login</button>
+
+
+            </div>
+
+            <div id="orders-section" style="display: none;">
+            <h2>Orders</h2>
+            <input type="text" id="searchBox" placeholder="Search your orders..." oninput="searchforOrders"/>
+
+
+            <table>
+                <thread>
+                <tr>
+                    <th>ID</th>
+                    <th>User</th>
+                    <th>Product</th>
+                    <th>Status</th>
+                    <th>Update</th>
+
+                </tr>
+            </thread>
+            <tbody id="orders"></tbody>
+            </table>Table
+
+        </div>
+        </div>
+        <script src="app.js"></script>
+    </body>
+</html>

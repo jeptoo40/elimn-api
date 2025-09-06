@@ -1,0 +1,26 @@
+{
+  "name": "elimn-assessment",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Elimn Limited full-stack assessment project",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.2",
+    "body-parser": "^2.2.0",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.1",
+    "mysql2": "^3.14.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  },
+  "author": "Your Name",
+  "license": "ISC"
+}

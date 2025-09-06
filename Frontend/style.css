@@ -1,0 +1,47 @@
+body{
+    font-family: Arial, sans-serif;
+    background: #f8f9fa;
+    padding: 0;
+}
+
+.container {
+    width: 90;
+    min-height: 900px;
+    margin: 30px auto;
+    background: wheat;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0);
+}
+h1{
+    text-align: center;
+}
+input, button{
+    padding: 10px;
+    margin: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+button{
+    cursor: pointer;
+    background: #007bff;
+    color: #f8f9fa;
+    border-collapse: collapse;
+}
+
+table{
+    width: 100%;
+    margin-top: 15px;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+th{
+    background: #007bff;
+    color: white;
+}
